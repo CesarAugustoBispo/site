@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <main>
+    <section class="page-section">
+      <h2 class="section-title">Scientific Events</h2>
+
+      <form class="pub-filters" method="get" action="/section/scientific-events">
+        <input type="text" name="search" placeholder="Search events..." value="<%= filters.search || '' %>" class="filter-input" />
+        <select name="year" class="filter-select">
+          <option value="">All years</option>
+          <% years.forEach(function(y) { %>
+            <option value="<%= y %>" <%= filters.year == y ? 'selected' : '' %>><%= y %></option>
+          <% }); %>
+        </select>
+        <select name="role" class="filter-select">
+          <option value="">All roles</option>
+          <% ['Invited Speaker', 'Organizer', 'Committee Member', 'Attendee', 'Presenter', 'Other'].forEach(function(r) { %>
+            <option value="<%= r %>" <%= filters.role === r ? 'selected' : '' %>><%= r %></option>
+          <% }); %>
+        </select>
+        <button type="submit" class="filter-btn">Filter</button>
+        <% if (filters.search || filters.year || filters.role) { %>
+          <a href="/section/scientific-events" class="filter-clear">Clear</a>
+        <% } %>
+      </form>
+
+      <% if (events.length === 0) { %>
+        <p class="empty-message">No events found.</p>
+      <% } else { %>
+        <ul class="pub-list">
+          <% events.forEach(function(evt) { %>
+          <li class="pub-item">
+            <span class="pub-year" style="min-width:110px;"><%= (function() {
+              var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+              var sd = new Date(evt.start_date + 'T00:00:00');
+              var m = months[sd.getMonth()];
+              var y = sd.getFullYear();
+              if (evt.end_date) {
+                var ed = new Date(evt.end_date + 'T00:00:00');
+                if (sd.getMonth() === ed.getMonth() && sd.getFullYear() === ed.getFullYear()) {
+                  return sd.getDate() + '-' + ed.getDate() + ' ' + m + ' ' + y;
+                } else {
+                  return sd.getDate() + ' ' + m + ' - ' + ed.getDate() + ' ' + months[ed.getMonth()] + ' ' + ed.getFullYear();
+                }
+              }
+              return m + ' ' + y;
+            })() %></span>
+            <div class="pub-body">
+              <a class="pub-title" href="<%= evt.url || '#' %>">
+                <%= evt.name %>
+                <% if (evt.role) { %>
+                  <span class="pub-badge badge-role badge-role-<%= evt.role.toLowerCase().replace(/\s+/g, '-') %>"><%= evt.role %></span>
+                <% } %>
+              </a>
+              <% if (evt.location) { %>
+                <p class="pub-venue"><%= evt.location %></p>
+              <% } %>
+              <% if (evt.description) { %>
+                <p class="pub-authors"><%= evt.description %></p>
+              <% } %>
+            </div>
+          </li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </section>
+  </main>
+
+  <%- include('../partials/footer') %>
+  <script src="/js/main.js"></script>
+</body>
+</html>

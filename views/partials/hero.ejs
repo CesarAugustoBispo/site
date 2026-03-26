@@ -1,0 +1,47 @@
+<section id="home">
+  <div class="hero">
+    <div class="hero-photo-wrap">
+      <% if (profile && profile.photo_path) { %>
+        <img class="hero-photo" src="<%= profile.photo_path %>" alt="<%= profile.name %>" />
+      <% } else { %>
+        <div class="avatar-placeholder">
+          <svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="36" r="20"/><ellipse cx="50" cy="85" rx="35" ry="22"/></svg>
+        </div>
+      <% } %>
+
+      <% if (profile && profile.links && profile.links.length) { %>
+        <div class="social-icons">
+          <% profile.links.forEach(function(link) { %>
+            <a class="social-icon" href="<%= link.url %>" target="_blank" rel="noopener" title="<%= link.label %>">
+              <% if (link.icon === 'orcid') { %>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#a6ce39"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919zm1.444 1.347v7.341h2.297c2.359 0 3.9-1.303 3.9-3.731 0-2.153-1.297-3.61-3.853-3.61z"/></svg>
+              <% } else if (link.icon === 'scholar') { %>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5h3.18v.02C3.1 14.08 7.02 18 12 18c1.83 0 3.53-.53 4.97-1.45l1.46 1.73L24 9.5 12 0z"/></svg>
+              <% } else { %>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <% } %>
+              <%= link.label %>
+            </a>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+
+    <div class="hero-info">
+      <% if (profile) { %>
+        <h1 class="hero-name"><%= profile.name %></h1>
+        <p class="hero-title"><%= profile.title %></p>
+        <p class="hero-affil"><%= profile.department %></p>
+        <p class="hero-affil"><%= profile.institute %></p>
+        <p class="hero-affil" style="margin-bottom:0.8rem"><%= profile.university %></p>
+        <p class="hero-email"><a href="mailto:<%= profile.email %>"><%= profile.email %></a></p>
+        <% if (profile.research_interests) { %>
+          <p class="hero-interests"><em>Research interests:</em> <%= profile.research_interests %></p>
+        <% } %>
+        <% if (profile.group_name) { %>
+          <p class="hero-group">Member of <a href="<%= profile.group_url %>"><%= profile.group_name %></a></p>
+        <% } %>
+      <% } %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,38 @@
+<footer>
+  <div class="footer-inner">
+    <div class="footer-block">
+      <p class="footer-label">Address</p>
+      <p class="footer-text">
+        <% if (profile && profile.footer_address) { %>
+          <%- profile.footer_address.replace(/\n/g, '<br>') %>
+        <% } %>
+      </p>
+    </div>
+    <div class="footer-block">
+      <p class="footer-label">Contact</p>
+      <p class="footer-text">
+        <% if (profile) { %>
+          <a href="mailto:<%= profile.email %>"><%= profile.email %></a>
+          <% if (profile.links && profile.links.length) { %>
+            <br><br>
+            <% profile.links.forEach(function(link, i) { %>
+              <a href="<%= link.url %>"><%= link.label %></a><%= i < profile.links.length - 1 ? ' · ' : '' %>
+            <% }); %>
+          <% } %>
+        <% } %>
+      </p>
+    </div>
+    <div class="footer-block">
+      <p class="footer-label">Research Group</p>
+      <p class="footer-text">
+        <% if (profile && profile.group_name) { %>
+          <a href="<%= profile.group_url %>"><%= profile.group_name %></a>
+        <% } %>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© <%= new Date().getFullYear() %> <%= profile ? profile.name : '' %></span>
+    <span class="footer-copy">Last updated: <%= new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) %></span>
+  </div>
+</footer>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <main>
+    <%- include('../partials/hero') %>
+
+    <% if (publications && publications.length) { %>
+    <section id="publications">
+      <h2 class="section-title">Latest Research</h2>
+      <ul class="pub-list">
+        <% publications.forEach(function(pub) { %>
+        <li class="pub-item">
+          <span class="pub-year"><%= pub.year %></span>
+          <div class="pub-body">
+            <a class="pub-title" href="<%= pub.url || '#' %>">
+              <%= pub.title %>
+              <span class="pub-badge badge-<%= pub.status.toLowerCase().replace(/\s+/g, '-') %>"><%= pub.status %></span>
+            </a>
+            <p class="pub-authors">
+              <% pub.authors.forEach(function(a, i) { %>
+                <% if (a.is_self) { %><strong><%= a.author_name %></strong><% } else { %><%= a.author_name %><% } %><%= i < pub.authors.length - 1 ? ', ' : '' %>
+              <% }); %>
+            </p>
+            <% if (pub.venue) { %>
+              <p class="pub-venue"><%= pub.venue %></p>
+            <% } %>
+          </div>
+        </li>
+        <% }); %>
+      </ul>
+      <a class="view-all" href="/section/publications">View all publications →</a>
+    </section>
+    <% } %>
+    <% if (upcomingEvents && upcomingEvents.length) { %>
+    <section id="upcoming-events">
+      <h2 class="section-title">Upcoming Events</h2>
+      <ul class="pub-list">
+        <% upcomingEvents.forEach(function(evt) { %>
+        <li class="pub-item">
+          <span class="pub-year"><%= (function() {
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            var sd = new Date(evt.start_date + 'T00:00:00');
+            var m = months[sd.getMonth()];
+            var y = sd.getFullYear();
+            if (evt.end_date) {
+              var ed = new Date(evt.end_date + 'T00:00:00');
+              if (sd.getMonth() === ed.getMonth() && sd.getFullYear() === ed.getFullYear()) {
+                return sd.getDate() + '-' + ed.getDate() + ' ' + m + ' ' + y;
+              } else {
+                return sd.getDate() + ' ' + m + ' - ' + ed.getDate() + ' ' + months[ed.getMonth()] + ' ' + ed.getFullYear();
+              }
+            }
+            return m + ' ' + y;
+          })() %></span>
+          <div class="pub-body">
+            <a class="pub-title" href="<%= evt.url || '#' %>">
+              <%= evt.name %>
+              <% if (evt.role) { %>
+                <span class="pub-badge badge-role badge-role-<%= evt.role.toLowerCase().replace(/\s+/g, '-') %>"><%= evt.role %></span>
+              <% } %>
+            </a>
+            <% if (evt.location) { %>
+              <p class="pub-venue"><%= evt.location %></p>
+            <% } %>
+          </div>
+        </li>
+        <% }); %>
+      </ul>
+      <a class="view-all" href="/section/scientific-events">View all events →</a>
+    </section>
+    <% } %>
+
+  </main>
+
+  <%- include('../partials/footer') %>
+  <script src="/js/main.js"></script>
+</body>
+</html>

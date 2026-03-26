@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <main>
+    <section class="page-section" style="text-align:center; padding:6rem 2rem;">
+      <h2 class="section-title" style="font-size:3rem; margin-bottom:0.5rem;"><%= status %></h2>
+      <p style="font-family:'Inter',sans-serif; color:var(--text-muted); font-size:1rem; margin-bottom:2rem;"><%= message %></p>
+      <a href="/" class="view-all">← Back to home</a>
+    </section>
+  </main>
+
+  <%- include('../partials/footer') %>
+  <script src="/js/main.js"></script>
+</body>
+</html>

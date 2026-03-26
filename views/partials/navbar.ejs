@@ -1,0 +1,32 @@
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="/"><%= profile ? profile.name : 'Academic Page' %></a>
+    <ul class="nav-links">
+      <% if (typeof sections !== 'undefined' && sections.length) { %>
+        <% sections.forEach(function(s) { %>
+          <li>
+            <a href="/section/<%= s.slug %>"
+               class="<%= currentPath === '/section/' + s.slug ? 'active' : '' %>">
+              <%= s.name %>
+            </a>
+          </li>
+        <% }); %>
+      <% } %>
+    </ul>
+    <div class="nav-right">
+      <button id="theme-toggle" aria-label="Toggle theme">
+        <span id="theme-icon">🌙</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <% if (typeof sections !== 'undefined' && sections.length) { %>
+    <% sections.forEach(function(s) { %>
+      <a href="/section/<%= s.slug %>"><%= s.name %></a>
+    <% }); %>
+  <% } %>
+</div>

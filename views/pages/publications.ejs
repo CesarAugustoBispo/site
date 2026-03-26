@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <main>
+    <section class="page-section">
+      <h2 class="section-title">Publications</h2>
+
+      <form class="pub-filters" method="get" action="/section/publications">
+        <input type="text" name="search" placeholder="Search titles..." value="<%= filters.search || '' %>" class="filter-input" />
+        <select name="year" class="filter-select">
+          <option value="">All years</option>
+          <% years.forEach(function(y) { %>
+            <option value="<%= y %>" <%= filters.year == y ? 'selected' : '' %>><%= y %></option>
+          <% }); %>
+        </select>
+        <select name="status" class="filter-select">
+          <option value="">All statuses</option>
+          <% ['Published', 'Accepted', 'Submitted', 'To appear', 'Preprint'].forEach(function(s) { %>
+            <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s %></option>
+          <% }); %>
+        </select>
+        <button type="submit" class="filter-btn">Filter</button>
+        <% if (filters.search || filters.year || filters.status) { %>
+          <a href="/section/publications" class="filter-clear">Clear</a>
+        <% } %>
+      </form>
+
+      <% if (publications.length === 0) { %>
+        <p class="empty-message">No publications found.</p>
+      <% } else { %>
+        <ul class="pub-list">
+          <% publications.forEach(function(pub) { %>
+          <li class="pub-item">
+            <span class="pub-year"><%= pub.year %></span>
+            <div class="pub-body">
+              <a class="pub-title" href="<%= pub.url || '#' %>">
+                <%= pub.title %>
+                <span class="pub-badge badge-<%= pub.status.toLowerCase().replace(/\s+/g, '-') %>"><%= pub.status %></span>
+              </a>
+              <p class="pub-authors">
+                <% pub.authors.forEach(function(a, i) { %>
+                  <% if (a.is_self) { %><strong><%= a.author_name %></strong><% } else { %><%= a.author_name %><% } %><%= i < pub.authors.length - 1 ? ', ' : '' %>
+                <% }); %>
+              </p>
+              <% if (pub.venue) { %>
+                <p class="pub-venue"><%= pub.venue %></p>
+              <% } %>
+            </div>
+          </li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </section>
+  </main>
+
+  <%- include('../partials/footer') %>
+  <script src="/js/main.js"></script>
+</body>
+</html>
