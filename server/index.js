@@ -1,5 +1,10 @@
 require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 
+// Ensure JWT_SECRET is always set
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = 'academic-site-default-secret-change-me';
+}
+
 const fs = require('fs');
 const express = require('express');
 const path = require('path');
